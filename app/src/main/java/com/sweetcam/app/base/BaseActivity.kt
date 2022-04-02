@@ -1,20 +1,17 @@
 package com.sweetcam.app.base
 
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.anythink.core.api.ATAdConst
-import com.anythink.core.api.ATAdInfo
-import com.anythink.core.api.AdError
+import com.anythink.banner.api.ATBannerExListener
 import com.anythink.interstitial.api.ATInterstitial
-import com.anythink.interstitial.api.ATInterstitialExListener
 import com.anythink.splashad.api.ATSplashAd
-import com.anythink.splashad.api.ATSplashAdListener
-import com.anythink.splashad.api.IATSplashEyeAd
+import com.sweetcam.app.App
 import com.sweetcam.app.R
 import com.sweetcam.app.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +25,7 @@ abstract class BaseActivity(layoutId: Int) : AppCompatActivity(layoutId) {
     private var isBackground = false
     private var topOnInterstitialAd: ATInterstitial? = null
     private var openAd: ATSplashAd? = null
+    private var bannerListener: ATBannerExListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +33,32 @@ abstract class BaseActivity(layoutId: Int) : AppCompatActivity(layoutId) {
         copyFiles()
         initStarCore()
 
-        //用TopOn的插屏
-        createTopOnInterstitialAd()
-        createOpenAd()
+
+        topOnInterstitialAd = App.instance!!.buildInsertAdvertisement()
+        topOnInterstitialAd?.setAdListener(buildInsertAdListener({
+            onInterstitialAdLoaded()
+        }, {
+            topOnInterstitialAd = App.instance!!.buildInsertAdvertisement()
+            topOnInterstitialAd?.setAdListener(it)
+        }, {
+            onInterstitialAdHidden()
+        }))
+        topOnInterstitialAd?.load()
+
+        openAd = App.instance!!.buildOpenAdvertisement(buildOpenAdListener({
+            onSplashAdLoaded()
+        }, {
+            lifecycleScope.launch(Dispatchers.IO) {
+                delay(3000)
+                openAd?.onDestory()
+                openAd = App.instance!!.buildOpenAdvertisement(it)
+                openAd?.loadAd()
+            }
+        }))
+        openAd?.loadAd()
+        bannerListener = buildBannerAdListener()
         onConvert()
+        addBannerAd()
     }
 
     abstract fun onConvert()
@@ -87,113 +107,6 @@ abstract class BaseActivity(layoutId: Int) : AppCompatActivity(layoutId) {
             }
         }
     }
-
-    private fun createOpenAd(offset: Long = 0L) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            if (offset > 0) {
-                delay(offset)
-            }
-            withContext(Dispatchers.Main) {
-                openAd?.onDestory()
-                openAd = openAdCreator()
-            }
-        }
-    }
-
-    private fun createTopOnInterstitialAd(offset: Long = 0L) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            if (offset > 0) {
-                delay(offset)
-            }
-            withContext(Dispatchers.Main) {
-                topOnInterstitialAd = topOnInterstitialAdCreator()
-            }
-        }
-    }
-
-    private fun topOnInterstitialAdCreator() =
-        ATInterstitial(this, app.getString(R.string.top_on_insert_ad_id)).apply {
-            setAdListener(object : ATInterstitialExListener {
-                override fun onInterstitialAdLoaded() {
-                    "topOnInterstitialAd onInterstitialAdLoaded".loge()
-                    this@BaseActivity.onInterstitialAdLoaded()
-                }
-
-                override fun onInterstitialAdLoadFail(p0: AdError?) {
-                    "topOnInterstitialAd onInterstitialAdLoadFail $p0".loge()
-                    createTopOnInterstitialAd(3000)
-                }
-
-                override fun onInterstitialAdClicked(p0: ATAdInfo?) {
-                    "topOnInterstitialAd onInterstitialAdClicked $p0".loge()
-                }
-
-                override fun onInterstitialAdShow(p0: ATAdInfo?) {
-                    "topOnInterstitialAd onInterstitialAdShow $p0".loge()
-                }
-
-                override fun onInterstitialAdClose(p0: ATAdInfo?) {
-                    "topOnInterstitialAd onInterstitialAdClose $p0".loge()
-                    adLastTime = System.currentTimeMillis()
-                    createTopOnInterstitialAd()
-                    onInterstitialAdHidden()
-                }
-
-                override fun onInterstitialAdVideoStart(p0: ATAdInfo?) {
-                    "topOnInterstitialAd onInterstitialAdVideoStart $p0".loge()
-                }
-
-                override fun onInterstitialAdVideoEnd(p0: ATAdInfo?) {
-                    "topOnInterstitialAd onInterstitialAdVideoEnd $p0".loge()
-                }
-
-                override fun onInterstitialAdVideoError(p0: AdError?) {
-                    "topOnInterstitialAd onInterstitialAdVideoError $p0".loge()
-                    createTopOnInterstitialAd(3000)
-                }
-
-                override fun onDeeplinkCallback(p0: ATAdInfo?, p1: Boolean) {
-                    "topOnInterstitialAd onDeeplinkCallback $p0".loge()
-                }
-            })
-            load()
-        }
-
-
-    private fun openAdCreator() =
-        ATSplashAd(this, getString(R.string.top_on_open_ad_id), null, object : ATSplashAdListener {
-            override fun onAdLoaded() {
-                Log.e("openAdCreator", "onAdLoaded")
-                onSplashAdLoaded()
-            }
-
-            override fun onNoAdError(p0: AdError?) {
-                Log.e("openAdCreator", "onNoAdError $p0")
-                createOpenAd(3000)
-            }
-
-            override fun onAdShow(p0: ATAdInfo?) {
-                Log.e("openAdCreator", "onAdShow $p0")
-            }
-
-            override fun onAdClick(p0: ATAdInfo?) {
-                Log.e("openAdCreator", "onAdClick")
-            }
-
-            override fun onAdDismiss(p0: ATAdInfo?, p1: IATSplashEyeAd?) {
-                Log.e("openAdCreator", "onAdDismiss")
-                createOpenAd()
-
-            }
-        }, 5000).apply {
-            setLocalExtra(
-                mutableMapOf<String, Any>(
-                    ATAdConst.KEY.AD_WIDTH to globalWidth,
-                    ATAdConst.KEY.AD_HEIGHT to (globalHeight * 0.85).toInt()
-                )
-            )
-            loadAd()
-        }
 
     fun showOpenAdImpl(viewGroup: ViewGroup, tag: String = ""): Boolean {
         openAd?.let {
@@ -245,6 +158,32 @@ abstract class BaseActivity(layoutId: Int) : AppCompatActivity(layoutId) {
                 }
             }
             return false
+        }
+    }
+
+    fun addBannerAd() {
+        val content = findViewById<ViewGroup>(android.R.id.content)
+        val frameLayout = FrameLayout(this)
+        val p = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        frameLayout.layoutParams = p
+
+        val linearLayout = LinearLayout(this)
+        val p1 = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+        linearLayout.layoutParams = p1
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            delay(3000)
+            val banner = App.instance!!.buildBannerAdvertisement(bannerListener!!)
+            banner.loadAd()
+            withContext(Dispatchers.Main) {
+                val p2 =
+                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dp2px(this@BaseActivity, 50f))
+                p2.gravity = Gravity.BOTTOM
+                banner.layoutParams = p2
+                linearLayout.addView(banner)
+                frameLayout.addView(linearLayout)
+                content.addView(frameLayout)
+            }
         }
     }
 }

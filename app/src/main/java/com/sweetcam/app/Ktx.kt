@@ -5,6 +5,7 @@ import android.os.Build
 import android.webkit.WebView
 import androidx.multidex.BuildConfig
 import com.anythink.core.api.ATSDK
+import com.anythink.core.api.NetTrafficeCallback
 import com.applovin.sdk.AppLovinMediationProvider
 import com.applovin.sdk.AppLovinSdk
 import com.applovin.sdk.AppLovinSdkSettings
@@ -46,6 +47,17 @@ class Ktx private constructor(application: Application) {
                 WebView.setDataDirectorySuffix(processName)
             }
         }
+
+        ATSDK.checkIsEuTraffic(app, object : NetTrafficeCallback {
+            override fun onResultCallback(isEU: Boolean) {
+                if (isEU && ATSDK.getGDPRDataLevel(app) == ATSDK.UNKNOWN) {
+                    ATSDK.showGdprAuth(app)
+                }
+            }
+
+            override fun onErrorCallback(errorMsg: String) {
+            }
+        })
 
         ATSDK.setNetworkLogDebug(BuildConfig.DEBUG)
         ATSDK.integrationChecking(app)
