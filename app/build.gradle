@@ -15,7 +15,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "org.snbeau.apcam"
+        applicationId "ftp.summer.suncam"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
@@ -116,4 +116,9 @@ dependencies {
     implementation 'com.flyco.dialog:FlycoDialog_Lib:1.2.2@aar'
     implementation 'com.flyco.animation:FlycoAnimation_Lib:1.0.0@aar'
     implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.gitee.jacksonliao:ImageSelect:2.1.0'
+    implementation 'com.roger.catloadinglibrary:catloadinglibrary:1.0.9'
+    implementation 'com.allattentionhere:fabulousfilter:0.0.5'
+    implementation 'uk.co.ribot:easyadapter:1.5.0@aar'
+    implementation 'me.jahirfiquitiva:FABsMenu:1.1.4'
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="6"
+    android:padding="10dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <RadioButton
+        style="@style/radiobuttonStyle"
+        android:drawableTop="@drawable/rb1"
+        android:text="breast"/>
+
+    <RadioButton
+        style="@style/radiobuttonStyle"
+        android:drawableTop="@drawable/rb2"
+        android:text="legs"/>
+
+    <RadioButton
+        style="@style/radiobuttonStyle"
+        android:drawableTop="@drawable/rb3"
+        android:text="legs length"/>
+
+    <RadioButton
+        style="@style/radiobuttonStyle"
+        android:drawableTop="@drawable/rb4"
+        android:text="shoulder"/>
+
+    <RadioButton
+        style="@style/radiobuttonStyle"
+        android:drawableTop="@drawable/rb5"
+        android:text="slimming"/>
+
+    <RadioButton
+        style="@style/radiobuttonStyle"
+        android:drawableTop="@drawable/rb6"
+        android:text="waist"/>
+</RadioGroup>

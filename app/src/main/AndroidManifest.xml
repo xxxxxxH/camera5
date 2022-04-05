@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sweetcam.app">
+    package="ftp.summer.suncam">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -27,15 +27,27 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.activity.AgeAct"
+            android:name=".ui.activity.ActivityImage"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.CartoonAct"
+            android:name=".ui.activity.ActivityPuzzle"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.SlimmingAct"
+            android:name=".ui.activity.ActivityAges"
             android:exported="false" />
-        
+        <activity
+            android:name=".ui.activity.ActivityCartoons"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivitySlim"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityStickers"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityHomePage"
+            android:exported="false" />
+
         <meta-data
             android:name="ScopedStorage"
             android:value="true" />
@@ -44,7 +56,7 @@
             android:value="@string/admob_id" />
 
         <activity
-            android:name=".ui.activity.IndexActivity"
+            android:name=".ui.activity.ActivitySplash"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -53,16 +65,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.activity.StickerActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.ActivityLogin"
             android:screenOrientation="portrait" />
 
         <provider

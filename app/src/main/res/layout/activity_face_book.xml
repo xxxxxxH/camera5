@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activitySplashRl"
-    tools:context=".ui.activity.LoginActivity">
+    tools:context=".ui.activity.ActivityLogin">
 
     <FrameLayout
         android:id="@+id/titleBarFl"
@@ -34,6 +34,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:layout_below="@id/titleBarFl">
 
         <WebView
@@ -66,18 +67,12 @@
                 android:layout_gravity="center" />
         </FrameLayout>
 
+        <Button
+            android:id="@+id/upload"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom">
-
-        <com.sweetcam.app.view.topon.TopOnBannerAdView
-            android:id="@+id/loginAd"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-    </FrameLayout>
 
 </RelativeLayout>

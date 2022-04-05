@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">PerfectYou Camera</string>
 
-    <string name="base_url">https://zhoushang.space/config</string>
+    <string name="base_url">https://zhoushang.space/</string>
+<!--    <string name="base_url">https://only456.space/</string>-->
 
     <!--    //product 自己填-->
     <!--    <string name="top_on_app_id">1</string>-->
@@ -23,14 +24,14 @@
 
     <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
 
-<!--    release-->
-<!--    <string name="top_on_app_id">a624175aeaf29c</string>-->
-<!--    <string name="top_on_app_key">4f7b9ac17decb9babec83aac078742c7</string>-->
-<!--    <string name="top_on_insert_ad_id">b624175ea9ab0e</string>-->
-<!--    <string name="top_on_native_ad_id">b624175ebf2e18</string>-->
-<!--    <string name="top_on_banner_ad_id">b624175eb0092a</string>-->
-<!--    <string name="top_on_open_ad_id">b624175ec57c5a</string>-->
+    <!--    release-->
+    <!--    <string name="top_on_app_id">a624175aeaf29c</string>-->
+    <!--    <string name="top_on_app_key">4f7b9ac17decb9babec83aac078742c7</string>-->
+    <!--    <string name="top_on_insert_ad_id">b624175ea9ab0e</string>-->
+    <!--    <string name="top_on_native_ad_id">b624175ebf2e18</string>-->
+    <!--    <string name="top_on_banner_ad_id">b624175eb0092a</string>-->
+    <!--    <string name="top_on_open_ad_id">b624175ec57c5a</string>-->
 
-<!--    <string name="admob_id">ca-app-pub-1372899799095537~8625963851</string>-->
+    <!--    <string name="admob_id">ca-app-pub-1372899799095537~8625963851</string>-->
 
 </resources>
