@@ -5,7 +5,7 @@
 
 .gradle/
 .idea/
-.safedk/
+schemas/
 build/
 captures/
 
